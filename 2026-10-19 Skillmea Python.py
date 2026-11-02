@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import alpha
 
-
+#nějaká úprava
 
 fig, ax = plt.subplots() # figure - "plátno", axes - samotný graf
 x=[0,1,2,3] #zdrojová data osa x
