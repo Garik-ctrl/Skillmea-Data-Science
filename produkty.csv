@@ -1,0 +1,53 @@
+product_id,nazev,kategorie,podkategorie,cena_bez_dph,naklad
+P001,Bezdrátová sluchátka,Elektronika,Audio,1890,1405
+P002,Bluetooth reproduktor,Elektronika,Audio,1290,851
+P003,Powerbanka 20000 mAh,Elektronika,Příslušenství,790,604
+P004,Nabíječka USB-C 65 W,Elektronika,Příslušenství,690,500
+P005,Webkamera Full HD,Elektronika,Počítače,990,568
+P006,Herní myš,Elektronika,Počítače,1190,945
+P007,Mechanická klávesnice,Elektronika,Počítače,2190,1621
+P008,Chytré hodinky,Elektronika,Nositelná,3490,2605
+P009,Fitness náramek,Elektronika,Nositelná,1390,809
+P010,Externí SSD 1 TB,Elektronika,Počítače,2490,1650
+P011,Monitor 27 palců,Elektronika,Počítače,5290,3400
+P012,Kabel HDMI 2 m,Elektronika,Příslušenství,190,149
+P013,Robotický vysavač,Domácnost,Úklid,6990,4970
+P014,Ruční vysavač,Domácnost,Úklid,2490,1882
+P015,Kávovar na kapsle,Domácnost,Kuchyně,3290,2174
+P016,Rychlovarná konvice,Domácnost,Kuchyně,890,540
+P017,Nepřilnavá pánev 28 cm,Domácnost,Kuchyně,590,406
+P018,Sada kuchyňských nožů,Domácnost,Kuchyně,1190,673
+P019,LED žárovky 4 ks,Domácnost,Osvětlení,249,188
+P020,Stolní lampa,Domácnost,Osvětlení,690,488
+P021,Zvlhčovač vzduchu,Domácnost,Klima,1590,1176
+P022,Stojanový ventilátor,Domácnost,Klima,1290,824
+P023,Jógamatka,Sport,Fitness,590,468
+P024,Sada činek 20 kg,Sport,Fitness,1490,1152
+P025,Švihadlo,Sport,Fitness,190,141
+P026,Běžecké boty,Sport,Běh,2490,1491
+P027,Sportovní láhev,Sport,Outdoor,290,193
+P028,Turistický batoh 35 l,Sport,Outdoor,1790,1004
+P029,Stan pro dva,Sport,Outdoor,2990,1760
+P030,Cyklocomputer,Sport,Cyklistika,1390,1002
+P031,Cyklistická helma,Sport,Cyklistika,990,729
+P032,Lyžařské brýle,Sport,Zimní sporty,1290,1022
+P033,Román - bestseller,Knihy,Beletrie,349,220
+P034,Detektivka,Knihy,Beletrie,299,192
+P035,Kuchařka,Knihy,Naučné,499,333
+P036,Programování v Pythonu,Knihy,Naučné,699,418
+P037,Analýza dat v praxi,Knihy,Naučné,749,436
+P038,Dětská pohádková kniha,Knihy,Dětské,259,173
+P039,Komiks,Knihy,Dětské,229,139
+P040,Atlas světa,Knihy,Naučné,599,430
+P041,Stavebnice 500 dílů,Hračky,Stavebnice,1190,785
+P042,Plyšový medvěd,Hračky,Plyšáci,390,296
+P043,Společenská hra,Hračky,Hry,790,573
+P044,Puzzle 1000 dílků,Hračky,Hry,399,251
+P045,Autodráha,Hračky,Dráhy,1990,1509
+P046,Panenka,Hračky,Panenky,590,443
+P047,Pleťový krém,Kosmetika,Péče o pleť,450,291
+P048,Šampon,Kosmetika,Péče o vlasy,199,124
+P049,Parfém 50 ml,Kosmetika,Vůně,1290,930
+P050,Sprchový gel,Kosmetika,Tělo,99,58
+P051,Elektrický zubní kartáček,Kosmetika,Ústní hygiena,1190,714
+P052,Make-up paleta,Kosmetika,Make-up,690,381
