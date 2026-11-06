@@ -111,4 +111,12 @@ print(megatabulka[["hruby_zisk","velikost_objednavky"]])
 
 trzby_dle_mesice_obj=dokoncene_objednavky_mega.groupby(["order_id", "rok_mesic_objednavky"])["hruby_zisk"].sum()
 print(trzby_dle_mesice_obj)
-print(trzby_dle_mesice_obj.describe())
+print(trzby_dle_mesice_obj.info())
+
+pomocna_tabulka=zakaznici.groupby("segment")["registrace"].count()
+print(pomocna_tabulka)
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(16,9))
+ax.bar(pomocna_tabulka.index, pomocna_tabulka.values)
+plt.show()
