@@ -1,0 +1,64 @@
+product_id,nazev,kategorie,podkategorie,cena_bez_dph,naklad
+P001,Sluchátka elektronika 1,Elektronika,Sluchátka,1470.0,1171.0
+P002,Chytré hodinky elektronika 2,Elektronika,Chytré hodinky,3240.0,2477.0
+P003,Powerbanka elektronika 3,Elektronika,Powerbanka,2380.0,1939.0
+P004,Reproduktor elektronika 4,Elektronika,Reproduktor,10790.0,7998.0
+P005,Kamera elektronika 5,Elektronika,Kamera,5400.0,4081.0
+P006,Sluchátka elektronika 6,Elektronika,Sluchátka,12790.0,10621.0
+P007,Chytré hodinky elektronika 7,Elektronika,Chytré hodinky,5150.0,4173.0
+P008,Powerbanka elektronika 8,Elektronika,Powerbanka,3700.0,3031.0
+P009,Reproduktor elektronika 9,Elektronika,Reproduktor,3080.0,2343.0
+P010,Kamera elektronika 10,Elektronika,Kamera,1930.0,1442.0
+P011,Kávovar domácnost 1,Domácnost,Kávovar,1630.0,997.0
+P012,Vysavač domácnost 2,Domácnost,Vysavač,2430.0,1365.0
+P013,Lampa domácnost 3,Domácnost,Lampa,1290.0,779.0
+P014,Nádobí domácnost 4,Domácnost,Nádobí,620.0,391.0
+P015,Textil domácnost 5,Domácnost,Textil,1250.0,745.0
+P016,Kávovar domácnost 6,Domácnost,Kávovar,650.0,432.0
+P017,Vysavač domácnost 7,Domácnost,Vysavač,3600.0,2278.0
+P018,Lampa domácnost 8,Domácnost,Lampa,960.0,647.0
+P019,Nádobí domácnost 9,Domácnost,Nádobí,1820.0,1114.0
+P020,Textil domácnost 10,Domácnost,Textil,4860.0,2908.0
+P021,Běh sport 1,Sport,Běh,2070.0,1154.0
+P022,Kolo sport 2,Sport,Kolo,550.0,332.0
+P023,Fitness sport 3,Sport,Fitness,500.0,290.0
+P024,Turistika sport 4,Sport,Turistika,1450.0,787.0
+P025,Plavání sport 5,Sport,Plavání,2300.0,1347.0
+P026,Běh sport 6,Sport,Běh,1650.0,932.0
+P027,Kolo sport 7,Sport,Kolo,890.0,516.0
+P028,Fitness sport 8,Sport,Fitness,1040.0,625.0
+P029,Turistika sport 9,Sport,Turistika,1440.0,821.0
+P030,Plavání sport 10,Sport,Plavání,250.0,154.0
+P031,Péče o pleť kosmetika 1,Kosmetika,Péče o pleť,500.0,215.0
+P032,Vlasy kosmetika 2,Kosmetika,Vlasy,480.0,193.0
+P033,Parfémy kosmetika 3,Kosmetika,Parfémy,1460.0,743.0
+P034,Make-up kosmetika 4,Kosmetika,Make-up,140.0,61.0
+P035,Tělo kosmetika 5,Kosmetika,Tělo,900.0,385.0
+P036,Péče o pleť kosmetika 6,Kosmetika,Péče o pleť,570.0,251.0
+P037,Vlasy kosmetika 7,Kosmetika,Vlasy,1020.0,515.0
+P038,Parfémy kosmetika 8,Kosmetika,Parfémy,1400.0,650.0
+P039,Make-up kosmetika 9,Kosmetika,Make-up,190.0,96.0
+P040,Tělo kosmetika 10,Kosmetika,Tělo,130.0,55.0
+P041,Romány knihy 1,Knihy,Romány,270.0,168.0
+P042,Odborné knihy 2,Knihy,Odborné,370.0,204.0
+P043,Komiks knihy 3,Knihy,Komiks,180.0,110.0
+P044,Dětské knihy 4,Knihy,Dětské,370.0,227.0
+P045,Kuchařky knihy 5,Knihy,Kuchařky,410.0,265.0
+P046,Romány knihy 6,Knihy,Romány,690.0,388.0
+P047,Odborné knihy 7,Knihy,Odborné,720.0,457.0
+P048,Komiks knihy 8,Knihy,Komiks,460.0,285.0
+P049,Dětské knihy 9,Knihy,Dětské,400.0,260.0
+P050,Kuchařky knihy 10,Knihy,Kuchařky,250.0,153.0
+P051,Stavebnice hračky 1,Hračky,Stavebnice,1430.0,724.0
+P052,Hry hračky 2,Hračky,Hry,830.0,447.0
+P053,Plyšáci hračky 3,Hračky,Plyšáci,1250.0,623.0
+P054,Venkovní hračky 4,Hračky,Venkovní,810.0,480.0
+P055,Puzzle hračky 5,Hračky,Puzzle,860.0,455.0
+P056,Stavebnice hračky 6,Hračky,Stavebnice,920.0,488.0
+P057,Hry hračky 7,Hračky,Hry,960.0,485.0
+P058,Plyšáci hračky 8,Hračky,Plyšáci,330.0,163.0
+P059,Venkovní hračky 9,Hračky,Venkovní,190.0,106.0
+P060,Puzzle hračky 10,Hračky,Puzzle,290.0,160.0
+P901,Vyřazený produkt 1,Vyřazené zboží,Vyřazené,1200.0,840.0
+P902,Vyřazený produkt 2,Vyřazené zboží,Vyřazené,800.0,560.0
+P903,Vyřazený produkt 3,Vyřazené zboží,Vyřazené,2100.0,1470.0
