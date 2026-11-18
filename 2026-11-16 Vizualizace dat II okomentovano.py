@@ -256,53 +256,6 @@ plt.show()                                                   # zobrazit graf
 # ###################   TADY JSME V HODINĚ 16. 11. SKONČILI   #########################
 # #####################################################################################
 
-
-fig, osy=plt.subplots(2,3, figsize=(12,6), sharex=True, sharey=True)
-osy=osy.flatten()
-for i, kat in enumerate(kat_poradi):
-    ax=osy[i]
-    cast=kat_mesic.loc[kat][2025]
-    index=cast/cast.mean()
-    ax.axhline(1, color=SEDA, linewidth=1, linestyle="--")
-    ax.plot(index.index, index.values, color=MODRA, linewidth=2, marker="o", markersize=3)
-    ax.set_title(kat, loc="left")
-    ax.set_xticks(range(1,13))
-fig.supxlabel("Měsíc v roce 2025")
-fig.supylabel("Sezónní index (1 = průměrný měsíc)")
-fig.suptitle("Po vydělení průměrem jsou kategorie srovnatelné: nejvýraznější sezónu mají Hračky (prosinec)", x=0.01, ha="left", fontsize=13, fontweight="bold")
-fig.tight_layout()
-fig.savefig("outputs/v2_02_small_multiples_index.png", dpi=120)
-plt.show()
-
-fig, ax=plt.subplots(figsize=(9,4.5))
-for kat in kat_poradi:
-    rada=kat_mesic.loc[kat][2025]
-    ax.plot(rada.index, rada/rada.mean(), color=SVETLE_SEDA, linewidth=1.5)
-rada=kat_mesic.loc["Hračky"][2025]
-ax.plot(rada.index, rada/rada.mean(), color=ORANZOVA, linewidth=3)
-ax.text(12.1, (rada/rada.mean()).iloc[-1], "Hračky", color=ORANZOVA, va="center", fontweight="bold")
-ax.set_xticks(range(1,13))
-ax.set_xlabel("Měsíc v roce 2025"); ax.set_ylabel("Sezónní index (1 = průměrný měsíc)")
-ax.set_title("Hračky mají v prosinci 3× průměrnou měsíční tržbu, ostatní kategorie jsou klidnější", loc="left")
-fig.tight_layout()
-fig.savefig("outputs/v2_03_zvyrazneni_jedne.png", dpi=120)
-plt.show()
-
-fig, osy=plt.subplots(1, 2, figsize=(14,3.6), sharey=True)
-for ax, kanal in zip(osy, ["web","mobilni_app"]):
-    cast=dok[dok["channel"]==kanal]
-    tab=pd.crosstab(cast["den_v_tydnu"], cast["hodina"], normalize="all")*100
-    tab.index=["Po","Út","St","Čt","Pá","So","Ne"]
-    sns.heatmap(tab, cmap="Blues", vmin=0, vmax=1.5,
-                linewidths=0.3, cbar=(kanal=="mobilni_app"),
-                cbar_kws={"label":"% objednávek kanálu"}, ax=ax)
-    ax.grid(False)
-    ax.set_title(kanal, loc="left"); ax.set_xlabel("Hodina"); ax.set_ylabel("")
-fig.suptitle("Web i aplikace mají stejný rytmus: špička 19–21 h, ve dne rovnoměrně", x=0.01, ha="left", fontsize=12, fontweight="bold")
-fig.tight_layout()
-fig.savefig("outputs/v2_06_heatmapa_kanaly.png", dpi=120)
-plt.show()
-
 dok["mesic_cislo"]=dok["order_date"].dt.year*12+dok["order_date"].dt.month
 prvni_cislo=dok.groupby("customer_id")["mesic_cislo"].min()
 prvni_text=dok.groupby("customer_id")["order_date"].min().dt.strftime("%Y-%m")
