@@ -245,7 +245,7 @@ ax.grid(False)                                               # vypnout mřížku
 plt.show()                                                   # zobrazit graf
 
 # =====================================================================================
-# SHRNUTÍ: CO SI ZE DNEŠKA ODNÉST (3 věty pro studenty)
+# SHRNUTÍ: CO SI ZE DNEŠKA ODNÉST
 # =====================================================================================
 # 1) Mnoho skupin v čase -> small multiples (mřížka malých grafů). Chceš srovnávat velikosti? Společná osa. Chceš srovnávat tvary? Vydělit vlastním průměrem (index).
 # 2) Dvě kategorie na osách + číslo v buňce -> heatmapa. Postup: crosstab / pivot_table -> paleta -> sns.heatmap. Vždy popisek barevné stupnice a ax.grid(False).
