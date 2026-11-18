@@ -250,3 +250,385 @@ plt.show()                                                   # zobrazit graf
 # 1) Mnoho skupin v čase -> small multiples (mřížka malých grafů). Chceš srovnávat velikosti? Společná osa. Chceš srovnávat tvary? Vydělit vlastním průměrem (index).
 # 2) Dvě kategorie na osách + číslo v buňce -> heatmapa. Postup: crosstab / pivot_table -> paleta -> sns.heatmap. Vždy popisek barevné stupnice a ax.grid(False).
 # 3) Jedna barva = množství (Blues, YlOrRd). Při porovnání dvou heatmap vedle sebe MUSÍ mít stejné vmin a vmax.
+
+
+# #####################################################################################
+# ###################   TADY JSME V HODINĚ 16. 11. SKONČILI   #########################
+# #####################################################################################
+
+
+fig, osy=plt.subplots(2,3, figsize=(12,6), sharex=True, sharey=True)
+osy=osy.flatten()
+for i, kat in enumerate(kat_poradi):
+    ax=osy[i]
+    cast=kat_mesic.loc[kat][2025]
+    index=cast/cast.mean()
+    ax.axhline(1, color=SEDA, linewidth=1, linestyle="--")
+    ax.plot(index.index, index.values, color=MODRA, linewidth=2, marker="o", markersize=3)
+    ax.set_title(kat, loc="left")
+    ax.set_xticks(range(1,13))
+fig.supxlabel("Měsíc v roce 2025")
+fig.supylabel("Sezónní index (1 = průměrný měsíc)")
+fig.suptitle("Po vydělení průměrem jsou kategorie srovnatelné: nejvýraznější sezónu mají Hračky (prosinec)", x=0.01, ha="left", fontsize=13, fontweight="bold")
+fig.tight_layout()
+fig.savefig("outputs/v2_02_small_multiples_index.png", dpi=120)
+plt.show()
+
+fig, ax=plt.subplots(figsize=(9,4.5))
+for kat in kat_poradi:
+    rada=kat_mesic.loc[kat][2025]
+    ax.plot(rada.index, rada/rada.mean(), color=SVETLE_SEDA, linewidth=1.5)
+rada=kat_mesic.loc["Hračky"][2025]
+ax.plot(rada.index, rada/rada.mean(), color=ORANZOVA, linewidth=3)
+ax.text(12.1, (rada/rada.mean()).iloc[-1], "Hračky", color=ORANZOVA, va="center", fontweight="bold")
+ax.set_xticks(range(1,13))
+ax.set_xlabel("Měsíc v roce 2025"); ax.set_ylabel("Sezónní index (1 = průměrný měsíc)")
+ax.set_title("Hračky mají v prosinci 3× průměrnou měsíční tržbu, ostatní kategorie jsou klidnější", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_03_zvyrazneni_jedne.png", dpi=120)
+plt.show()
+
+fig, osy=plt.subplots(1, 2, figsize=(14,3.6), sharey=True)
+for ax, kanal in zip(osy, ["web","mobilni_app"]):
+    cast=dok[dok["channel"]==kanal]
+    tab=pd.crosstab(cast["den_v_tydnu"], cast["hodina"], normalize="all")*100
+    tab.index=["Po","Út","St","Čt","Pá","So","Ne"]
+    sns.heatmap(tab, cmap="Blues", vmin=0, vmax=1.5,
+                linewidths=0.3, cbar=(kanal=="mobilni_app"),
+                cbar_kws={"label":"% objednávek kanálu"}, ax=ax)
+    ax.grid(False)
+    ax.set_title(kanal, loc="left"); ax.set_xlabel("Hodina"); ax.set_ylabel("")
+fig.suptitle("Web i aplikace mají stejný rytmus: špička 19–21 h, ve dne rovnoměrně", x=0.01, ha="left", fontsize=12, fontweight="bold")
+fig.tight_layout()
+fig.savefig("outputs/v2_06_heatmapa_kanaly.png", dpi=120)
+plt.show()
+
+dok["mesic_cislo"]=dok["order_date"].dt.year*12+dok["order_date"].dt.month
+prvni_cislo=dok.groupby("customer_id")["mesic_cislo"].min()
+prvni_text=dok.groupby("customer_id")["order_date"].min().dt.strftime("%Y-%m")
+dok["kohorta"]=dok["customer_id"].map(prvni_text)
+dok["mesic_od_prvniho"]=dok["mesic_cislo"]-dok["customer_id"].map(prvni_cislo)
+kohorty=dok.groupby(["kohorta","mesic_od_prvniho"])["customer_id"].nunique().unstack()
+retence=kohorty.div(kohorty[0], axis=0)
+retence_graf=retence.drop(index="2025-01")
+retence_graf=retence_graf.iloc[:, 1:13].dropna(how="all")
+retence_graf.index=retence_graf.index+" (n="+kohorty.loc[retence_graf.index,0].astype(int).astype(str)+")"
+
+fig, ax=plt.subplots(figsize=(12,7.5))
+sns.heatmap(retence_graf, cmap="Blues", vmin=0, vmax=0.6, annot=True, fmt=".0%", annot_kws={"size":7},
+            linewidths=0.5, cbar_kws={"label":"Podíl kohorty, který v daném měsíci nakoupil"}, ax=ax)
+ax.grid(False)
+ax.set_xlabel("Měsíců od prvního nákupu"); ax.set_ylabel("Kohorta (měsíc prvního nákupu)")
+ax.set_title("V každém dalším měsíci nakoupí zhruba třetina nových zákazníků; kohorty se příliš neliší", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_08_kohortni_heatmapa.png", dpi=120)
+plt.show()
+print(retence_graf.mean().round(2))
+
+fig, osy=plt.subplots(1, 2, figsize=(12,4))
+osy[0].hist(dok["trzba_bez_dph"], bins=50, color=MODRA, edgecolor="white")
+osy[0].set_title("Lineární osa: vidíme jen nejmenší objednávky", loc="left")
+hranice_binu=np.logspace(np.log10(dok["trzba_bez_dph"].min()), np.log10(dok["trzba_bez_dph"].max()), 50)
+osy[1].hist(dok["trzba_bez_dph"], bins=hranice_binu, color=MODRA, edgecolor="white")
+osy[1].set_xscale("log")
+osy[1].set_title("Logaritmická osa: vidíme celé rozdělení", loc="left")
+for ax in osy:
+    ax.set_xlabel("Hodnota objednávky (Kč bez DPH)"); ax.set_ylabel("Počet objednávek")
+fig.tight_layout()
+fig.savefig("outputs/v2_09_histogram_log.png", dpi=120)
+plt.show()
+
+fig, ax=plt.subplots(figsize=(8,5))
+sns.boxplot(data=dok, x="segment", y="trzba_bez_dph", order=PORADI_SEGMENT,
+            color=SVETLA_MODRA, fliersize=2, ax=ax)
+ax.set_yscale("log")
+prumery=dok.groupby("segment")["trzba_bez_dph"].mean().reindex(PORADI_SEGMENT)
+ax.scatter(range(3), prumery.values, marker="D", color=ORANZOVA, s=60, zorder=3, label="průměr")
+ax.legend(frameon=False, loc="upper left")
+ax.set_xlabel(""); ax.set_ylabel("Hodnota objednávky (Kč bez DPH, log osa)")
+ax.set_title("Firemní objednávky jsou typicky 4× větší; průměr (◆) tahá nahoru dlouhý ocas", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_10_boxplot_segment.png", dpi=120)
+plt.show()
+print(dok.groupby("segment")["trzba_bez_dph"].agg(["median","mean"]).round(0))
+
+zakaznik["koupil_text"]=np.where(zakaznik["koupi_znovu"]==1, "koupil znovu", "nekoupil")
+fig, ax=plt.subplots(figsize=(7,5))
+sns.violinplot(data=zakaznik, x="koupil_text", y="recency_dny",
+               order=["koupil znovu","nekoupil"],
+               inner="quartile",
+               cut=0,
+               palette={"koupil znovu":MODRA, "nekoupil":ORANZOVA},
+               hue="koupil_text", legend=False,
+               ax=ax)
+ax.set_xlabel(""); ax.set_ylabel("Dny od posledního nákupu (recency)")
+ax.set_title("Kdo koupil znovu, nakoupil nedávno", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_11_violin_recency.png", dpi=120)
+plt.show()
+
+fig, ax=plt.subplots(figsize=(8,4.5))
+sns.ecdfplot(data=dok, x="trzba_bez_dph", hue="segment",
+             hue_order=PORADI_SEGMENT, palette=BARVY_SEGMENT,
+             log_scale=True, linewidth=2.5, ax=ax)
+ax.axhline(0.5, color=SEDA, linewidth=1, linestyle="--")
+ax.set_xlabel("Hodnota objednávky (Kč bez DPH, log osa)"); ax.set_ylabel("Podíl objednávek menších než hodnota")
+ax.set_title("Čára Firemních je posunutá doprava: polovina jejich objednávek přesáhne 8 600 Kč", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_12_ecdf_segment.png", dpi=120)
+plt.show()
+
+sloupce=["koupi_znovu","recency_dny","frekvence","monetary_log","AVG_hodnota_objednavky","interval_prumer","objednavek_90d","podil_vracenych"]
+kor=zakaznik[sloupce].corr()
+maska=np.triu(np.ones_like(kor, dtype=bool), k=1)
+fig, ax=plt.subplots(figsize=(9,6.5))
+sns.heatmap(kor, mask=maska,
+            cmap="RdBu_r",
+            vmin=-1, vmax=1, center=0,
+            annot=True, fmt=".2f", annot_kws={"size":8},
+            square=True,
+            linewidths=0.5, cbar_kws={"shrink":0.8, "label":"korelace"}, ax=ax)
+ax.grid(False)
+ax.set_title("Kdo dlouho nenakoupil, ten se nevrací: koupi_znovu × recency = −0,44", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_13_korelace.png", dpi=120)
+plt.show()
+
+fig, ax=plt.subplots(figsize=(9,5.5))
+bubliny=ax.scatter(zakaznik["recency_dny"], zakaznik["frekvence"],
+                   s=np.sqrt(zakaznik["monetary"])/6,
+                   c=zakaznik["pravdepodobnost"],
+                   cmap="RdYlBu", vmin=0, vmax=1,
+                   alpha=0.55, edgecolor="none")
+fig.colorbar(bubliny, ax=ax, label="Pravděpodobnost nákupu (model)")
+ax.set_xlabel("Dny od posledního nákupu (recency)"); ax.set_ylabel("Počet objednávek (frekvence)")
+ax.set_title("Nedávno a často = šance blízko 100 %; dlouho a málo = téměř ztracený zákazník", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_14_bubliny.png", dpi=120)
+plt.show()
+
+fig, ax=plt.subplots(figsize=(9,5.5))
+hexy=ax.hexbin(zakaznik["recency_dny"], zakaznik["frekvence"],
+               C=zakaznik["koupi_znovu"],
+               reduce_C_function=np.mean,
+               gridsize=18,
+               mincnt=8,
+               cmap="Blues", vmin=0, vmax=1)
+fig.colorbar(hexy, ax=ax, label="Podíl, kdo koupil znovu")
+ax.set_xlabel("Dny od posledního nákupu (recency)"); ax.set_ylabel("Počet objednávek (frekvence)")
+ax.grid(False)
+ax.set_title("Mapa šancí: vlevo nahoře je koupě skoro jistá, vpravo dole skoro nikdo nekoupí", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_15_hexbin.png", dpi=120)
+plt.show()
+
+sady={"A: jen recency":["recency_dny"],
+      "B: recency + frekvence + útrata":["recency_dny","frekvence","monetary_log"],
+      "C: všechny příznaky":list(X_train_s.columns)}
+barvy_sad=["#9a9892", "#7fb0ec", MODRA]
+
+fig, ax=plt.subplots(figsize=(6.5,6.5))
+ax.plot([0,1], [0,1], color=SEDA, linestyle="--", linewidth=1, label="náhoda (AUC 0,5)")
+for (nazev, sloupce_sady), barva in zip(sady.items(), barvy_sad):
+    m=LogisticRegression(max_iter=1000)
+    m.fit(X_train_s[sloupce_sady], y_train)
+    p=m.predict_proba(X_test_s[sloupce_sady])[:,1]
+    fpr, tpr, prahy=roc_curve(y_test, p)
+    auc_sady=roc_auc_score(y_test, p)
+    ax.plot(fpr, tpr, color=barva, linewidth=2.5, label=f"{nazev} (AUC {auc_sady:.3f})")
+    print(nazev, "AUC =", round(auc_sady,3))
+tip=(p_test>=0.5)
+tpr_05=(tip & (y_test==1)).sum()/(y_test==1).sum()
+fpr_05=(tip & (y_test==0)).sum()/(y_test==0).sum()
+ax.scatter([fpr_05], [tpr_05], color=ORANZOVA, s=70, zorder=3)
+ax.annotate("práh 0,5", (fpr_05, tpr_05), xytext=(fpr_05+0.08, tpr_05-0.10), color=ORANZOVA, arrowprops={"arrowstyle":"->","color":ORANZOVA})
+ax.set_xlabel("FPR: podíl nekupců, které model omylem označil za kupce"); ax.set_ylabel("TPR: podíl kupců, které model správně našel")
+ax.set_aspect("equal")
+ax.legend(frameon=False, loc="lower right")
+ax.set_title("Samotná recency dá AUC 0,77; další příznaky ho zvednou jen o 0,02", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_16_roc.png", dpi=120)
+plt.show()
+
+koef=pd.Series(model.coef_[0], index=X_train_s.columns).sort_values()
+barvy=np.where(koef>0, MODRA, ORANZOVA)
+fig, ax=plt.subplots(figsize=(8,5))
+ax.barh(koef.index, koef.values, color=barvy, height=0.65)
+ax.axvline(0, color=SEDA, linewidth=1)
+ax.grid(axis="y", visible=False)
+ax.set_xlabel("Váha příznaku v modelu (příznaky jsou standardizované, váhy jsou srovnatelné)")
+nejvetsi=koef.abs().sort_values(ascending=False).index[0]
+ax.set_title(f"Nejsilnější příznak: {nejvetsi}\nmodrá = zvyšuje šanci na nákup, oranžová = snižuje", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_17_koeficienty.png", dpi=120)
+plt.show()
+print(koef.round(2))
+
+test=pd.DataFrame({"skutecnost":y_test.values, "p":p_test})
+test["decil"]=pd.qcut(test["p"].rank(method="first"), 10, labels=False)
+decily=test.groupby("decil").agg(podil_kupcu=("skutecnost","mean"),
+                                 p_prumer=("p","mean"),
+                                 pocet=("skutecnost","size"))
+print(decily.round(2))
+
+fig, osy=plt.subplots(1, 2, figsize=(13,4.8))
+osy[0].bar(decily.index+1, decily["podil_kupcu"], color=MODRA, width=0.7, label="skutečně koupili")
+osy[0].plot(decily.index+1, decily["p_prumer"], color=ORANZOVA, marker="o", linewidth=2, label="co tipoval model")
+osy[0].axhline(y_test.mean(), color=SEDA, linestyle="--", linewidth=1)
+osy[0].text(0.55, y_test.mean()+0.02, "celkový průměr", color=SEDA, ha="left", va="bottom", fontsize=9)
+osy[0].set_xticks(range(1,11))
+osy[0].set_xlabel("Decil zákazníků podle pravděpodobnosti (1 = nejnižší, 10 = nejvyšší)"); osy[0].set_ylabel("Podíl, kdo koupil znovu")
+osy[0].set_ylim(0,1.05)
+osy[0].legend(frameon=False, loc="upper left")
+osy[0].set_title(f"V nejlepším decilu koupí znovu {decily['podil_kupcu'].iloc[-1]:.0%}, v nejhorším jen {decily['podil_kupcu'].iloc[0]:.0%}", loc="left")
+poradi_zakazniku=test.sort_values("p")
+odchod=(poradi_zakazniku["skutecnost"]==0).astype(int)
+zisk=odchod.cumsum().values/odchod.sum()
+osloveno=np.arange(1, len(poradi_zakazniku)+1)/len(poradi_zakazniku)
+osy[1].plot(osloveno, zisk, color=MODRA, linewidth=2.5, label="podle modelu")
+osy[1].plot([0,1], [0,1], color=SEDA, linestyle="--", linewidth=1, label="náhodný výběr")
+bod=int(0.2*len(poradi_zakazniku))
+osy[1].scatter([osloveno[bod-1]], [zisk[bod-1]], color=ORANZOVA, s=70, zorder=3)
+osy[1].annotate(f"20 % oslovených = {zisk[bod-1]:.0%} odcházejících", (osloveno[bod-1], zisk[bod-1]),
+                xytext=(0.28, 0.12), color=ORANZOVA, arrowprops={"arrowstyle":"->","color":ORANZOVA})
+osy[1].set_xlabel("Podíl nejrizikovějších zákazníků, které osloví obchodník"); osy[1].set_ylabel("Podíl odcházejících, které zachytí")
+osy[1].legend(frameon=False, loc="lower right")
+osy[1].set_title(f"Oslovení nejrizikovější pětiny zachytí {zisk[bod-1]:.0%} odchodů (náhodně 20 %)", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_18_decily_gain.png", dpi=120)
+plt.show()
+
+cm=confusion_matrix(y_test, (p_test>=0.5).astype(int))
+fig, ax=plt.subplots(figsize=(5.5,4.5))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False,
+            annot_kws={"size":14}, linewidths=1,
+            xticklabels=["tip: nekoupí","tip: koupí"],
+            yticklabels=["skutečně nekoupil","skutečně koupil"],
+            ax=ax)
+ax.grid(False)
+ax.set_title("Matice záměn při prahu 0,5", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_19_matice_zamen.png", dpi=120)
+plt.show()
+tn, fp, fn, tp=cm.ravel()
+print("Správně nekoupí:", tn, "| omylem koupí:", fp, "| omylem nekoupí:", fn, "| správně koupí:", tp)
+
+print("práh | označeno jako rizikoví | z nich skutečně odešlo (přesnost) | z odcházejících zachyceno")
+for prah in [0.3, 0.4, 0.5, 0.6, 0.7]:
+    riziko_tip=(p_test<prah)
+    zachyceno=(riziko_tip & (y_test.values==0)).sum()
+    print(f"{prah:.1f}  | {riziko_tip.sum():>5}                  | {zachyceno/max(riziko_tip.sum(),1):>6.0%}                           | {zachyceno/(y_test.values==0).sum():>6.0%}")
+
+poloha_kraju={"Karlovarský":(0,0), "Ústecký":(1,0), "Liberecký":(2,0), "Královéhradecký":(3,0),
+              "Plzeňský":(0,1), "Středočeský":(1,1), "Praha":(2,1), "Pardubický":(3,1), "Olomoucký":(4,1), "Moravskoslezský":(5,1),
+              "Jihočeský":(1,2), "Vysočina":(3,2), "Jihomoravský":(4,2), "Zlínský":(5,2)}
+
+kraje=dok.groupby("kraj").agg(trzba=("trzba_bez_dph","sum"),
+                              zakazniku=("customer_id","nunique"))
+kraje["trzba_mil"]=kraje["trzba"]/1e6
+kraje["trzba_na_zak"]=kraje["trzba"]/kraje["zakazniku"]/1e3
+print(kraje.sort_values("trzba_mil", ascending=False).round(1))
+
+fig, osy=plt.subplots(1, 2, figsize=(13,4.2))
+metriky_kraju=[("trzba_mil","Tržba kraje (mil. Kč)",plt.cm.Blues), ("trzba_na_zak","Tržba na zákazníka (tis. Kč)",plt.cm.Greens)]
+for ax, (sloupec, titulek, paleta) in zip(osy, metriky_kraju):
+    hodnoty=kraje[sloupec]
+    norm=mcolors.Normalize(vmin=hodnoty.min(), vmax=hodnoty.max())
+    for kraj, (sl, rad) in poloha_kraju.items():
+        hodnota=hodnoty[kraj]
+        barva_pole=paleta(0.15+0.85*norm(hodnota))
+        ax.add_patch(plt.Rectangle((sl, -rad), 0.94, 0.94, facecolor=barva_pole, edgecolor="white"))
+        barva_textu="white" if norm(hodnota)>0.55 else SEDA
+        ax.text(sl+0.47, -rad+0.55, kraj, ha="center", va="center", fontsize=7.5, color=barva_textu)
+        ax.text(sl+0.47, -rad+0.25, f"{hodnota:.1f}", ha="center", va="center", fontsize=10, fontweight="bold", color=barva_textu)
+    ax.set_xlim(-0.1, 6.1); ax.set_ylim(-2.1, 1.05)
+    ax.set_aspect("equal"); ax.axis("off")
+    ax.set_title(titulek, loc="left")
+fig.suptitle("Absolutně vede Praha, ale na zákazníka dobře vychází i Zlínský kraj: velikost kraje a hodnota zákazníka nejsou totéž", x=0.01, ha="left", fontsize=12, fontweight="bold")
+fig.tight_layout()
+fig.savefig("outputs/v2_20_mapa_kraju.png", dpi=120)
+plt.show()
+
+kat=radky.groupby("kategorie")["trzba_bez_dph"].sum().sort_values(ascending=False)/1e6
+podil_app=(dok["channel"]=="mobilni_app").groupby(dok["rok"]).mean()
+
+fig, osy=plt.subplots(2, 3, figsize=(14,8))
+osy[0,0].pie(kat.values, labels=kat.index, textprops={"fontsize":8})
+osy[0,0].set_title("ŠPATNĚ: koláč se 7 výsečemi", loc="left", color=ORANZOVA)
+osy[1,0].barh(kat.index[::-1], kat.values[::-1], color=MODRA, height=0.6)
+for i, v in enumerate(kat.values[::-1]):
+    osy[1,0].text(v, i, f" {v:.1f}", va="center", color=SEDA, fontsize=9)
+osy[1,0].grid(axis="y", visible=False)
+osy[1,0].set_title("LÉPE: seřazené sloupce s čísly", loc="left", color=MODRA)
+osy[0,1].bar(["2025","2026"], podil_app.values, color=MODRA, width=0.5)
+osy[0,1].set_ylim(0.20, 0.32)
+osy[0,1].set_title("ŠPATNĚ: osa y od 0,20 – rozdíl vypadá 4×", loc="left", color=ORANZOVA)
+osy[1,1].bar(["2025","2026"], podil_app.values, color=MODRA, width=0.5)
+osy[1,1].set_ylim(0, 0.4)
+for i, v in enumerate(podil_app.values):
+    osy[1,1].text(i, v+0.01, f"{v:.0%}", ha="center", color=SEDA, fontweight="bold")
+osy[1,1].set_title("LÉPE: osa od nuly – růst 1,4× je vidět, ale nepřehnaný", loc="left", color=MODRA)
+osy[1,1].set_ylabel("Podíl objednávek z mobilní aplikace")
+osy[0,2].imshow(tab_dh.values, cmap="jet", aspect="auto")
+osy[0,2].set_title("ŠPATNĚ: duha – je žlutá 'víc' než zelená?", loc="left", color=ORANZOVA)
+osy[1,2].imshow(tab_dh.values, cmap="Blues", aspect="auto")
+osy[1,2].set_title("LÉPE: jedna barva, tmavší = víc", loc="left", color=MODRA)
+for ax in [osy[0,2], osy[1,2], osy[0,0]]:
+    ax.grid(False)
+fig.suptitle("Stejná data, jiný dojem: tři nejčastější chyby", x=0.01, ha="left", fontsize=14, fontweight="bold")
+fig.tight_layout()
+fig.savefig("outputs/v2_21_anti_vzory.png", dpi=120)
+plt.show()
+print(podil_app.round(3))
+
+tab_km=(radky[(radky["rok"]==2025)&(radky["kategorie"]!="Vyřazené zboží")]
+        .pivot_table(index="kategorie", columns="mesic", values="trzba_bez_dph", aggfunc="sum"))
+index_km=tab_km.div(tab_km.mean(axis=1), axis=0)
+fig, ax=plt.subplots(figsize=(11,3.8))
+sns.heatmap(index_km, cmap="RdBu_r", center=1, vmin=0, vmax=2,
+            annot=True, fmt=".1f", annot_kws={"size":8}, linewidths=0.5,
+            cbar_kws={"label":"Sezónní index (1 = průměrný měsíc)"}, ax=ax)
+ax.grid(False)
+ax.set_xlabel("Měsíc v roce 2025"); ax.set_ylabel("")
+ax.set_title("Únor je nejslabší měsíc téměř všude; Hračky mají v prosinci 3× průměr", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_22_cviceni1_sezonni_heatmapa.png", dpi=120)
+plt.show()
+
+fig, ax=plt.subplots(figsize=(8,4.5))
+sns.boxplot(data=dok, x="dopravce", y="delivery_days", order=["DPD","PPL","Zasilkovna","Ceska posta"],
+            color=SVETLA_MODRA, fliersize=2, ax=ax)
+ax.set_xlabel(""); ax.set_ylabel("Doba doručení (dny)")
+ax.set_title("Česká pošta je nejpomalejší; DPD a PPL doručí obvykle za 1–3 dny", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_23_cviceni2a_doruceni_dopravce.png", dpi=120)
+plt.show()
+
+dpd=dok[dok["dopravce"]=="DPD"].copy()
+dpd["rok_mesic_text"]=dpd["rok_mesic"].astype(str)
+fig, ax=plt.subplots(figsize=(13,4.5))
+sns.boxplot(data=dpd, x="rok_mesic_text", y="delivery_days", color=SVETLA_MODRA, fliersize=2, ax=ax)
+ax.tick_params(axis="x", rotation=60)
+ax.set_xlabel(""); ax.set_ylabel("Doba doručení (dny) – DPD")
+ax.set_title("DPD v prosinci 2025: celý box je posunutý nahoru, nejde o pár zpožděných zásilek, ale o plošný problém", loc="left")
+fig.tight_layout()
+fig.savefig("outputs/v2_24_cviceni2b_dpd_mesice.png", dpi=120)
+plt.show()
+
+fig, osy=plt.subplots(1, 2, figsize=(12,4.5), sharey=True)
+for ax, (nazev, sloupce_sady) in zip(osy, [("A: jen recency", ["recency_dny"]), ("C: všechny příznaky", list(X_train_s.columns))]):
+    m=LogisticRegression(max_iter=1000)
+    m.fit(X_train_s[sloupce_sady], y_train)
+    p=m.predict_proba(X_test_s[sloupce_sady])[:,1]
+    t=pd.DataFrame({"skutecnost":y_test.values, "p":p})
+    t["decil"]=pd.qcut(t["p"].rank(method="first"), 10, labels=False)
+    d=t.groupby("decil")["skutecnost"].mean()
+    ax.bar(d.index+1, d.values, color=MODRA, width=0.7)
+    ax.axhline(y_test.mean(), color=SEDA, linestyle="--", linewidth=1)
+    ax.set_xticks(range(1,11)); ax.set_xlabel("Decil (1 = nejnižší pravděpodobnost)")
+    ax.set_title(f"Sada {nazev}: rozdíl nejhorší × nejlepší decil = {d.iloc[-1]-d.iloc[0]:.0%} b.", loc="left")
+osy[0].set_ylabel("Podíl, kdo koupil znovu"); osy[0].set_ylim(0,1.05)
+fig.tight_layout()
+fig.savefig("outputs/v2_25_cviceni3_decily_A_C.png", dpi=120)
+plt.show()
+
