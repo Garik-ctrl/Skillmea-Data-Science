@@ -1,0 +1,61 @@
+station_id,name,district,station_type,lat,lon,capacity,opened
+ST001,Masarykovo nám.,Slezská Ostrava,prumysl,49.78324,18.40744,10,2025-03-01
+ST002,Nová radnice,Přívoz,centrum,49.84394,18.33609,10,2025-03-01
+ST003,Stodolní,Moravská Ostrava,nadrazi,49.90494,18.34021,10,2025-03-01
+ST004,Karolina,Přívoz,centrum,49.8882,18.28498,20,2025-03-01
+ST005,Dolní Vítkovice,Přívoz,centrum,49.80493,18.28345,24,2025-03-01
+ST006,Hlavní nádraží,Hladnov,univerzita,49.7996,18.19395,20,2026-04-01
+ST007,Svinov nádraží,Mariánské Hory,obytna,49.91306,18.35413,24,2026-04-01
+ST008,Poruba VŠB,Zábřeh,obytna,49.82285,18.32155,20,2026-04-01
+ST009,Poruba Hlavní třída,Moravská Ostrava,centrum,49.87989,18.28038,20,2025-03-01
+ST010,Dubina OC,Moravská Ostrava,nadrazi,49.82278,18.2387,12,2025-03-01
+ST011,Zábřeh Hulváky,Poruba,univerzita,49.8155,18.30203,12,2026-04-01
+ST012,Hrabůvka náměstí,Dubina,obytna,49.82141,18.28888,12,2026-04-01
+ST013,Výškovice Jižní,Slezská Ostrava,park,49.87806,18.30085,10,2025-03-01
+ST014,Přívoz nádraží,Hrabůvka,obytna,49.80427,18.30545,20,2026-04-01
+ST015,Bělský les,Moravská Ostrava,centrum,49.90332,18.26148,12,2025-03-01
+ST016,Komenského sady,Moravská Ostrava,centrum,49.88877,18.34613,10,2025-03-01
+ST017,Landek park,Moravská Ostrava,centrum,49.76494,18.42617,15,2025-03-01
+ST018,Havlíčkovo nábřeží,Přívoz,nadrazi,49.81019,18.22695,20,2025-03-01
+ST019,Fakultní nemocnice,Dubina,obytna,49.8406,18.29848,24,2025-03-01
+ST020,Ostravar Aréna,Dubina,obytna,49.85205,18.26499,15,2025-03-01
+ST021,Slezskoostravský hrad,Hladnov,univerzita,49.83134,18.26085,15,2026-04-01
+ST022,Michálkovice,Poruba,obytna,49.78735,18.16223,20,2025-03-01
+ST023,Radvanice,Moravská Ostrava,centrum,49.80837,18.34211,15,2025-03-01
+ST024,Hrušov,Přívoz,centrum,49.85884,18.3344,15,2025-03-01
+ST025,Heřmanice,Výškovice,obytna,49.82958,18.31832,12,2025-03-01
+ST026,Muglinov,Slezská Ostrava,park,49.81914,18.28857,10,2025-03-01
+ST027,Martinov,Dubina,obytna,49.83028,18.29829,12,2025-03-01
+ST028,Antošovice,Přívoz,centrum,49.87929,18.2165,20,2025-03-01
+ST029,Kunčice,Poruba,univerzita,49.85722,18.23706,20,2026-04-01
+ST030,Hulváky Sever,Hladnov,univerzita,49.84244,18.3472,15,2025-03-01
+ST031,Hlubina,Moravská Ostrava,centrum,49.78992,18.27482,20,2025-03-01
+ST032,Lauby,Dubina,obytna,49.92573,18.29976,15,2025-03-01
+ST033,Vítkovice Ironworks,Zábřeh,obytna,49.82038,18.46062,10,2025-03-01
+ST034,Mariánské nám.,Dubina,obytna,49.7807,18.23697,10,2025-03-01
+ST035,Jiráskovo nám.,Poruba,obytna,49.84081,18.24936,15,2025-03-01
+ST036,Smetanovo nám.,Hladnov,univerzita,49.87238,18.30942,20,2025-03-01
+ST037,Prokešovo nám.,Přívoz,centrum,49.78945,18.29452,15,2025-03-01
+ST038,Ostravice most,Slezská Ostrava,prumysl,49.82961,18.35997,24,2025-03-01
+ST039,Odra Marina,Stodolní,park,49.86657,18.16319,12,2025-03-01
+ST040,Poruba Sever,Hladnov,univerzita,49.87044,18.24191,12,2025-03-01
+ST041,Poruba Jih,Zábřeh,park,49.85141,18.33576,24,2025-03-01
+ST042,Dubina Východ,Hrabůvka,obytna,49.87008,18.29201,12,2025-03-01
+ST043,Zábřeh Sever,Přívoz,centrum,49.81538,18.36903,10,2025-03-01
+ST044,Bazaly,Vítkovice,prumysl,49.84915,18.32234,24,2025-03-01
+ST045,Pustkovec,Stodolní,park,49.83223,18.30481,12,2025-03-01
+ST046,Plesná,Slezská Ostrava,park,49.81642,18.3256,20,2025-03-01
+ST047,Třebovice,Slezská Ostrava,park,49.828,18.27482,20,2025-03-01
+ST048,Krásné Pole,Hladnov,univerzita,49.79597,18.26744,24,2025-03-01
+ST049,Nová Bělá,Vítkovice,prumysl,49.80055,18.32146,12,2025-03-01
+ST050,Stará Bělá,Hrabůvka,obytna,49.81704,18.26782,24,2025-03-01
+ST051,Polanka,Stodolní,park,49.80625,18.3258,10,2025-03-01
+ST052,Proskovice,Mariánské Hory,obytna,49.91205,18.26931,24,2025-03-01
+ST053,Koblov,Přívoz,centrum,49.8193,18.31873,12,2025-03-01
+ST054,Petřkovice,Dubina,obytna,49.86445,18.34392,15,2025-03-01
+ST055,Hošťálkovice,Hrabůvka,obytna,49.94232,18.33634,15,2025-03-01
+ST056,Lhotka,Svinov,nadrazi,49.81951,18.19123,20,2025-03-01
+ST057,Hrabová,Slezská Ostrava,prumysl,49.76984,18.29679,15,2025-03-01
+ST058,Svinov Sever,Poruba,obytna,49.86953,18.33149,12,2025-03-01
+ST059,Nová Ves,Vítkovice,prumysl,49.80477,18.28121,12,2025-03-01
+ST060,Zámecká,Mariánské Hory,obytna,49.8834,18.25529,20,2025-03-01
